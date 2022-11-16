@@ -3,6 +3,7 @@ import { Subject, Observable } from 'rxjs';
 let numApiCalling = 0;
 let numApiSuccess = 0;
 let isClick = false;
+let timer
 const subject = new Subject<number>();
 
 const callApi1 = () => {
@@ -60,6 +61,7 @@ const observer = {
     if (isClick) {
       if (isSuccess()) {
         console.log('success');
+        clearTimeout(timer)
       }
     }
   },
@@ -69,14 +71,16 @@ const observer = {
 const subscription = subject.subscribe(observer);
 
 const clickBtn = () => {
+  clearTimeout(timer)
   isClick = true;
   if (isSuccess()) {
     console.log('click success');
     return;
   }
-  setTimeout(() => {
-    subscription.unsubscribe;
+  timer = setTimeout(() => {
+    // subscription.unsubscribe;
     console.log('timeout');
+    return;
   }, 1001);
 };
 
